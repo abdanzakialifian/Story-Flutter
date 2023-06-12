@@ -6,7 +6,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/data/source/remote/response/stories_response.dart';
-import 'package:story_app/ui/component/bottom_sheet_detail.dart';
 import 'package:story_app/ui/component/button_state.dart';
 import 'package:story_app/ui/component/item_list_story_placeholder.dart';
 import 'package:story_app/ui/component/safe_on_tap.dart';
@@ -122,14 +121,14 @@ class _HomePageState extends State<HomePage> {
                         pagingController: _pagingController,
                         builderDelegate:
                             PagedChildBuilderDelegate<ListStoryResponse>(
-                          firstPageProgressIndicatorBuilder: (context) =>
+                          firstPageProgressIndicatorBuilder: (_) =>
                               ListView.builder(
                             shrinkWrap: true,
                             itemCount: 10,
-                            itemBuilder: (context, index) =>
+                            itemBuilder: (_, index) =>
                                 const ItemListStoryPlaceholder(),
                           ),
-                          newPageProgressIndicatorBuilder: (context) => Padding(
+                          newPageProgressIndicatorBuilder: (_) => Padding(
                             padding: const EdgeInsets.all(18),
                             child: SizedBox(
                               height: 40,
@@ -141,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          noItemsFoundIndicatorBuilder: (context) => Column(
+                          noItemsFoundIndicatorBuilder: (_) => Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Lottie.asset(
@@ -167,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                               )
                             ],
                           ),
-                          itemBuilder: (context, item, index) {
+                          itemBuilder: (context, item, _) {
                             return ItemListStory(
                               listStoryResponse: item,
                               onIconClick: () {
@@ -176,16 +175,8 @@ class _HomePageState extends State<HomePage> {
                                     .showSnackbar(context);
                               },
                               onImageClick: (listStoryResponse) {
-                                showModalBottomSheet(
-                                  isDismissible: false,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => BottomSheetDetail(
-                                    listStoryResponse: listStoryResponse,
-                                    onIconCloseClick: () =>
-                                        context.pop(context),
-                                  ),
-                                );
+                                context.push(Constants.detailPage,
+                                    extra: listStoryResponse);
                               },
                             );
                           },

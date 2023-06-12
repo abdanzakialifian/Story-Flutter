@@ -138,7 +138,7 @@ class LoginPage extends StatelessWidget {
                   height: 50,
                 ),
                 Consumer<LoginViewModel>(
-                  builder: (context, value, child) {
+                  builder: (_, value, child) {
                     if (value.isButtonClicked) {
                       return ButtonState(
                         isLoading: true,

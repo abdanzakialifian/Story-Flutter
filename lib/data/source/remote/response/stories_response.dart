@@ -3,9 +3,6 @@ import 'dart:convert';
 StoriesResponse storiesResponseFromJson(String str) =>
     StoriesResponse.fromJson(json.decode(str));
 
-String storiesResponseToJson(StoriesResponse data) =>
-    json.encode(data.toJson());
-
 class StoriesResponse {
   bool? error;
   String? message;

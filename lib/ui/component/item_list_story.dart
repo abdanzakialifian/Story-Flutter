@@ -36,8 +36,9 @@ class ItemListStory extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 15,
-                        backgroundImage:
-                            AssetImage("avatar_story.jpg".getImageAssets()),
+                        backgroundImage: AssetImage(
+                          "avatar_story.jpg".getImageAssets(),
+                        ),
                       ),
                       const SizedBox(
                         width: 10,
@@ -66,7 +67,7 @@ class ItemListStory extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
                     imageUrl: listStoryResponse?.photoUrl ?? "",
-                    placeholder: (context, url) => Container(
+                    placeholder: (_, url) => Container(
                       color: HexColor(Constants.colorLightGrey),
                     ),
                     height: 200,

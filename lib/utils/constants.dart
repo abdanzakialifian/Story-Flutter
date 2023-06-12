@@ -12,6 +12,7 @@ class Constants {
   static const profilePage = "/profile";
   static const cameraStoryPreview = "/camera";
   static const uploadPage = "/upload";
+  static const detailPage = "/detail";
 
   // all colors
   static const colorLightGrey = "#CED4D4";

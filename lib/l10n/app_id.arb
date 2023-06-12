@@ -24,5 +24,6 @@
     "message_exit_app": "Tekan satu kali lagi untuk keluar dari aplikasi",
     "upload_story": "Unggah Cerita",
     "data_not_found": "Data tidak ditemukan.",
-    "retry": "Coba Lagi"
+    "retry": "Coba Lagi",
+    "detail_story": "Detail Cerita"
 }

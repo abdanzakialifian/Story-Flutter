@@ -71,7 +71,7 @@ class ProfilePage extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         context: context,
-                        builder: (context) => BottomSheetInformation(
+                        builder: (_) => BottomSheetInformation(
                           iconName: "access_denied.png",
                           iconHeight: 130,
                           iconWidth: 130,

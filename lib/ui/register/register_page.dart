@@ -141,7 +141,7 @@ class RegisterPage extends StatelessWidget {
                   height: 50,
                 ),
                 Consumer<RegisterViewModel>(
-                  builder: (context, value, child) {
+                  builder: (_, value, child) {
                     if (value.isButtonClicked) {
                       return ButtonState(
                         isLoading: true,

@@ -38,7 +38,7 @@ class _UploadPageState extends State<UploadPage> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: LayoutBuilder(
-            builder: (context, constraints) {
+            builder: (_, constraints) {
               return SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -132,7 +132,7 @@ class _UploadPageState extends State<UploadPage> {
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Consumer<UploadViewModel>(
-                                      builder: (context, value, child) {
+                                      builder: (_, value, child) {
                                         if (value.isButtonClicked) {
                                           return ButtonState(
                                             isLoading: true,

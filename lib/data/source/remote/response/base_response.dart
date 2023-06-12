@@ -3,8 +3,6 @@ import 'dart:convert';
 BaseResponse baseResponseFromJson(String str) =>
     BaseResponse.fromJson(json.decode(str));
 
-String baseResponseToJson(BaseResponse data) => json.encode(data.toJson());
-
 class BaseResponse {
   bool? error;
   String? message;

@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:story_app/data/source/remote/response/stories_response.dart';
 import 'package:story_app/ui/camera/camera_story_preview.dart';
 import 'package:story_app/config/routes/custom_slide_transition.dart';
 import 'package:story_app/ui/camera/camera_view_model.dart';
 import 'package:story_app/ui/component/form_input_fields_view_model.dart';
+import 'package:story_app/ui/detail/detail_page.dart';
 import 'package:story_app/ui/home/home_page.dart';
 import 'package:story_app/ui/home/home_view_model.dart';
 import 'package:story_app/ui/login/login_page.dart';
@@ -24,7 +26,7 @@ class AppRouter {
   static Widget splashScreenPageRouteBuilder(
           BuildContext context, GoRouterState state) =>
       ChangeNotifierProvider(
-        create: (context) => SplashScreenViewModel(),
+        create: (_) => SplashScreenViewModel(),
         child: const SplashScreenPage(),
       );
 
@@ -34,10 +36,10 @@ class AppRouter {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider(
-              create: (context) => FormInputFieldsViewModel(),
+              create: (_) => FormInputFieldsViewModel(),
             ),
             ChangeNotifierProvider(
-              create: (context) => LoginViewModel(),
+              create: (_) => LoginViewModel(),
             ),
           ],
           child: const LoginPage(),
@@ -49,10 +51,10 @@ class AppRouter {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => FormInputFieldsViewModel(),
+            create: (_) => FormInputFieldsViewModel(),
           ),
           ChangeNotifierProvider(
-            create: (context) => RegisterViewModel(),
+            create: (_) => RegisterViewModel(),
           ),
         ],
         child: const RegisterPage(),
@@ -61,7 +63,7 @@ class AppRouter {
   static Page homePageRouteBuilder(BuildContext context, GoRouterState state) =>
       CustomSlideTransition(
         child: ChangeNotifierProvider(
-          create: (context) => HomeViewModel(),
+          create: (_) => HomeViewModel(),
           child: const HomePage(),
         ),
       );
@@ -70,7 +72,7 @@ class AppRouter {
           BuildContext context, GoRouterState state) =>
       CustomSlideTransition(
         child: ChangeNotifierProvider(
-          create: (context) => ProfileViewModel(),
+          create: (_) => ProfileViewModel(),
           child: const ProfilePage(),
         ),
       );
@@ -78,16 +80,24 @@ class AppRouter {
   static Widget cameraStoryPreviewRouteBuilder(
           BuildContext context, GoRouterState state) =>
       ChangeNotifierProvider(
-        create: (context) => CameraViewModel(),
+        create: (_) => CameraViewModel(),
         child: const CameraStoryPreview(),
       );
 
   static Widget uploadPageRouteBuilder(
           BuildContext context, GoRouterState state) =>
       ChangeNotifierProvider(
-        create: (context) => UploadViewModel(),
+        create: (_) => UploadViewModel(),
         child: UploadPage(
           image: state.extra as File,
+        ),
+      );
+
+  static Page detailPageRouteBuilder(
+          BuildContext context, GoRouterState state) =>
+      CustomSlideTransition(
+        child: DetailPage(
+          listStoryResponse: state.extra as ListStoryResponse,
         ),
       );
 
@@ -122,6 +132,10 @@ class AppRouter {
       GoRoute(
         path: Constants.uploadPage,
         builder: uploadPageRouteBuilder,
+      ),
+      GoRoute(
+        path: Constants.detailPage,
+        pageBuilder: detailPageRouteBuilder,
       ),
     ],
   );

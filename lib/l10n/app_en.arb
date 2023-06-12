@@ -24,5 +24,6 @@
     "message_exit_app": "Press one more time to exit the application",
     "upload_story": "Upload Story",
     "data_not_found": "Data not found.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "detail_story": "Detail Story"
 }
