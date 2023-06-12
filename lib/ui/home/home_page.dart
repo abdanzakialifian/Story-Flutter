@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                   builder: (context) => BottomSheetDetail(
                                     listStoryResponse: listStoryResponse,
                                     onIconCloseClick: () =>
-                                        Navigator.pop(context),
+                                        context.pop(context),
                                   ),
                                 );
                               },

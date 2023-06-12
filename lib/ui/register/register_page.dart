@@ -24,10 +24,10 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Stack(children: [
-            Column(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -196,10 +196,10 @@ class RegisterPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                _stateSignUp(),
               ],
             ),
-            _stateSignUp(),
-          ]),
+          ),
         ),
       ),
     );
