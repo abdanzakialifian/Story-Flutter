@@ -86,7 +86,7 @@ class ProfilePage extends StatelessWidget {
                           onButtonPressed: () {
                             // open app settings
                             openAppSettings().then((_) {
-                              Navigator.pop(context);
+                              context.pop(context);
                             });
                           },
                         ),
