@@ -6,13 +6,13 @@ import 'package:story_app/utils/extensions.dart';
 import 'package:story_app/utils/function.dart';
 
 class BottomSheetInformationLocation extends StatelessWidget {
-  final String? name;
+  final String? userName;
   final DateTime? createdAt;
   final List<LocationInformation>? listLocationInformation;
 
   const BottomSheetInformationLocation({
     Key? key,
-    this.name,
+    this.userName,
     this.createdAt,
     this.listLocationInformation,
   }) : super(key: key);
@@ -42,7 +42,7 @@ class BottomSheetInformationLocation extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name ?? "",
+                        userName?.capitalizeByWord() ?? "",
                         style: const TextStyle(
                           fontFamily: Constants.manjariBold,
                           fontSize: 20,
@@ -77,7 +77,7 @@ class BottomSheetInformationLocation extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        listLocationInformation?[index].title ?? "",
+                        listLocationInformation?[index].title ?? "-",
                         style: const TextStyle(
                           fontFamily: Constants.manjariBold,
                           fontSize: 16,
@@ -101,7 +101,7 @@ class BottomSheetInformationLocation extends StatelessWidget {
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
-                                listLocationInformation?[index].subTitle ?? "",
+                                listLocationInformation?[index].subTitle ?? "-",
                                 style: const TextStyle(
                                     fontFamily: Constants.manjariBold,
                                     fontSize: 14),

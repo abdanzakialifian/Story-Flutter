@@ -70,7 +70,7 @@ class _MapsPageState extends State<MapsPage> {
                       subTitle: info[0].postalCode),
                 ];
                 return BottomSheetInformationLocation(
-                  name: widget.listStoryResponse?.name,
+                  userName: widget.listStoryResponse?.name,
                   createdAt: widget.listStoryResponse?.createdAt,
                   listLocationInformation: listLocationInformation,
                 );
