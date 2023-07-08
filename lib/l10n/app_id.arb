@@ -25,5 +25,12 @@
     "upload_story": "Unggah Cerita",
     "data_not_found": "Data tidak ditemukan.",
     "retry": "Coba Lagi",
-    "detail_story": "Detail Cerita"
+    "detail_story": "Detail Cerita",
+    "location_not_found": "Location Not Found",
+    "country": "Negara",
+    "province": "Provinsi",
+    "district": "Kabupaten",
+    "subdistrict": "Kecamatan",
+    "urban_village": "Kelurahan",
+    "postal_code": "Kode Pos"
 }

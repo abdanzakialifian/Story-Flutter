@@ -12,6 +12,7 @@ import 'package:story_app/ui/home/home_page.dart';
 import 'package:story_app/ui/home/home_view_model.dart';
 import 'package:story_app/ui/login/login_page.dart';
 import 'package:story_app/ui/login/login_view_model.dart';
+import 'package:story_app/ui/maps/maps_page.dart';
 import 'package:story_app/ui/register/register_page.dart';
 import 'package:story_app/ui/register/register_view_model.dart';
 import 'package:story_app/ui/profile/profile_page.dart';
@@ -101,6 +102,13 @@ class AppRouter {
         ),
       );
 
+  static Page mapsPageRouteBuilder(BuildContext context, GoRouterState state) =>
+      CustomSlideTransition(
+        child: MapsPage(
+          listStoryResponse: state.extra as ListStoryResponse,
+        ),
+      );
+
   // use this in [MaterialApp.router]
   static final GoRouter _router = GoRouter(
     initialLocation: Constants.splashScreenPage,
@@ -136,6 +144,10 @@ class AppRouter {
       GoRoute(
         path: Constants.detailPage,
         pageBuilder: detailPageRouteBuilder,
+      ),
+      GoRoute(
+        path: Constants.mapsPage,
+        pageBuilder: mapsPageRouteBuilder,
       ),
     ],
   );

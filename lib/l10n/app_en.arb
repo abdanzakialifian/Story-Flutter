@@ -25,5 +25,13 @@
     "upload_story": "Upload Story",
     "data_not_found": "Data not found.",
     "retry": "Retry",
-    "detail_story": "Detail Story"
+    "detail_story": "Story Details",
+    "location_not_found": "Location Not Found",
+    "country": "Country",
+    "province": "Province",
+    "district": "District",
+    "subdistrict": "Sub-district",
+    "urban_village": "Urban Village",
+    "postal_code": "Postal Code"
+
 }

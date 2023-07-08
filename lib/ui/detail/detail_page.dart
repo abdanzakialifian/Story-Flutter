@@ -12,7 +12,7 @@ import 'package:story_app/utils/hexa_color.dart';
 class DetailPage extends StatelessWidget {
   final ListStoryResponse? listStoryResponse;
 
-  const DetailPage({super.key, this.listStoryResponse});
+  const DetailPage({Key? key, this.listStoryResponse}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,14 @@ class DetailPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Stack(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   children: [
-                    SafeOnTap(
-                      onSafeTap: () => context.pop(),
-                      child: const Icon(Icons.arrow_back),
+                    Positioned(
+                      left: 2,
+                      child: SafeOnTap(
+                        onSafeTap: () => context.pop(),
+                        child: const Icon(Icons.arrow_back),
+                      ),
                     ),
                     Center(
                       child: Text(
@@ -41,6 +44,25 @@ class DetailPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Positioned(
+                      right: 0,
+                      child: SafeOnTap(
+                        onSafeTap: () {
+                          if (listStoryResponse?.lat == null &&
+                              listStoryResponse?.lon == null) {
+                            AppLocalizations.of(context)
+                                ?.location_not_found
+                                .showSnackbar(context);
+                          } else {
+                            context.push(
+                              Constants.mapsPage,
+                              extra: listStoryResponse,
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.location_on),
+                      ),
+                    )
                   ],
                 ),
               ),
