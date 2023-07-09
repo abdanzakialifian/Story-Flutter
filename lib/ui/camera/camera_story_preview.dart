@@ -18,7 +18,8 @@ class CameraStoryPreview extends StatefulWidget {
 
 class _CameraStoryPreviewState extends State<CameraStoryPreview>
     with WidgetsBindingObserver {
-  CameraController? controller;
+  CameraController? _controller;
+  bool _isLifeCyclePaused = false;
 
   @override
   void initState() {
@@ -43,9 +44,9 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
             child: provider.isCameraInitialize
                 ? Transform.scale(
                     scale: 1 /
-                        ((controller?.value.aspectRatio ?? 0) *
+                        ((_controller?.value.aspectRatio ?? 0) *
                             MediaQuery.of(context).size.aspectRatio),
-                    child: CameraPreview(controller!),
+                    child: CameraPreview(_controller!),
                   )
                 : Container(),
           ),
@@ -105,7 +106,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
       // delay 500 milliseconds to get initialize camera
       Future.delayed(const Duration(milliseconds: 500), () {
         // dispose camera if navigate to another pages
-        final CameraController? cameraController = controller;
+        final CameraController? cameraController = _controller;
         if (cameraController == null || !cameraController.value.isInitialized) {
           return;
         }
@@ -130,7 +131,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
       final imageFile = File(value.path);
 
       // dispose camera if navigate to another pages
-      final CameraController? cameraController = controller;
+      final CameraController? cameraController = _controller;
       if (cameraController == null || !cameraController.value.isInitialized) {
         return;
       }
@@ -160,7 +161,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
   }
 
   Future<XFile?> takePicture() async {
-    final CameraController? cameraController = controller;
+    final CameraController? cameraController = _controller;
     if (cameraController?.value.isTakingPicture == true) {
       // A capture is already pending, do nothing.
       return null;
@@ -176,7 +177,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
 
   Future<void> _initializeCameraController(
       CameraDescription cameraDescription) async {
-    final CameraController? previousCameraController = controller;
+    final CameraController? previousCameraController = _controller;
     // Instantiating the camera controller
     final CameraController cameraController = CameraController(
       cameraDescription,
@@ -191,7 +192,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
     // Replace with the new controller
     if (mounted) {
       setState(() {
-        controller = cameraController;
+        _controller = cameraController;
       });
     }
 
@@ -202,7 +203,7 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
 
     // Initialize controller
     try {
-      await controller?.initialize();
+      await _controller?.initialize();
     } on CameraException catch (_) {
       if (!mounted) return;
       // set delay to avoid crashes
@@ -214,13 +215,13 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
     // Update the Boolean
     if (mounted) {
       context.read<CameraViewModel>().setIsCameraInitialize =
-          controller?.value.isInitialized ?? false;
+          _controller?.value.isInitialized ?? false;
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = controller;
+    final CameraController? cameraController = _controller;
 
     // App state changed before we got the chance to initialize.
     if (cameraController == null || !cameraController.value.isInitialized) {
@@ -229,18 +230,26 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
 
     if (state == AppLifecycleState.paused) {
       // Free up memory when camera not active
+      setState(() {
+        _isLifeCyclePaused = true;
+      });
       cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      context.read<CameraViewModel>().setIsCameraInitialize = false;
-      // Reinitialize the camera with same properties
-      _initializeCameraController(cameraController.description);
+      if (_isLifeCyclePaused) {
+        setState(() {
+          _isLifeCyclePaused = false;
+        });
+        context.read<CameraViewModel>().setIsCameraInitialize = false;
+        // Reinitialize the camera with same properties
+        _initializeCameraController(cameraController.description);
+      }
     }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    controller?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 }

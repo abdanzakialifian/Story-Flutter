@@ -2,8 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:story_app/ui/component/bottom_sheet_information.dart';
 import 'package:story_app/ui/component/button_state.dart';
 import 'package:story_app/ui/component/safe_on_tap.dart';
 import 'package:story_app/ui/upload/upload_view_model.dart';
@@ -24,6 +28,7 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage> {
   final TextEditingController _textEditingController = TextEditingController();
+  bool _isEmptyTextEditing = true;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +99,11 @@ class _UploadPageState extends State<UploadPage> {
                                 ),
                                 TextField(
                                   controller: _textEditingController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _isEmptyTextEditing = value.isEmpty;
+                                    });
+                                  },
                                   autocorrect: false,
                                   enableSuggestions: false,
                                   keyboardType: TextInputType.multiline,
@@ -128,6 +138,42 @@ class _UploadPageState extends State<UploadPage> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SafeOnTap(
+                                  onSafeTap: () => _checkPermissionMyLocation(),
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                    child: IntrinsicHeight(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              AppLocalizations.of(context)
+                                                      ?.add_location ??
+                                                  "",
+                                              style: const TextStyle(
+                                                fontFamily:
+                                                    Constants.manjariBold,
+                                              ),
+                                            ),
+                                          ),
+                                          const Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Expanded(
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
@@ -143,21 +189,23 @@ class _UploadPageState extends State<UploadPage> {
                                             textButton:
                                                 AppLocalizations.of(context)
                                                     ?.upload,
-                                            onButtonPressed: () async {
-                                              provider.setIsButtonClicked =
-                                                  true;
-                                              try {
-                                                var image =
-                                                    await _resizeImageIfLarge1MB(
-                                                        widget.image);
-                                                provider.postStory(
-                                                    image,
-                                                    _textEditingController
-                                                        .text);
-                                              } catch (error) {
-                                                log("Failed to compress image : $error");
-                                              }
-                                            },
+                                            onButtonPressed: _isEmptyTextEditing
+                                                ? null
+                                                : () async {
+                                                    provider.setIsButtonClicked =
+                                                        true;
+                                                    try {
+                                                      var image =
+                                                          await _resizeImageIfLarge1MB(
+                                                              widget.image);
+                                                      provider.postStory(
+                                                          image,
+                                                          _textEditingController
+                                                              .text);
+                                                    } catch (error) {
+                                                      log("Failed to compress image : $error");
+                                                    }
+                                                  },
                                           );
                                         }
                                       },
@@ -235,6 +283,67 @@ class _UploadPageState extends State<UploadPage> {
     } else {
       return File(compressFileImage?.path ?? "");
     }
+  }
+
+  void _checkPermissionMyLocation() async {
+    final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
+    final Position position;
+    final LatLng latLng;
+    LocationPermission locationPermission;
+    bool isServiceEnabled = false;
+
+    isServiceEnabled = await geolocatorPlatform.isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      if (mounted) {
+        "Location services is not available".showSnackbar(context);
+      }
+      return;
+    }
+
+    locationPermission = await geolocatorPlatform.checkPermission();
+    if (locationPermission == LocationPermission.denied) {
+      locationPermission = await geolocatorPlatform.requestPermission();
+      if (locationPermission == LocationPermission.denied) {
+        if (mounted) {
+          "Location permission is denied".showSnackbar(context);
+        }
+        return;
+      }
+      if (locationPermission == LocationPermission.deniedForever) {
+        _showBottomSheetAccessDenied();
+        return;
+      }
+    }
+
+    position = await geolocatorPlatform.getCurrentPosition();
+    latLng = LatLng(position.latitude, position.longitude);
+
+    if (mounted) {
+      context.push(Constants.locationPage, extra: latLng);
+    }
+  }
+
+  dynamic _showBottomSheetAccessDenied() {
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (_) => BottomSheetInformation(
+        iconName: "access_denied.png",
+        iconHeight: 130,
+        iconWidth: 130,
+        title: AppLocalizations.of(context)?.title_access_denied ?? "",
+        subTitle:
+            AppLocalizations.of(context)?.sub_title_access_denied_location ??
+                "",
+        textButton: AppLocalizations.of(context)?.go_to_setting ?? "",
+        onButtonPressed: () {
+          // open app settings
+          openAppSettings().then((_) {
+            context.pop(context);
+          });
+        },
+      ),
+    );
   }
 
   @override

@@ -18,6 +18,7 @@
     "created": "Created at : ",
     "title_access_denied": "Access Denied",
     "sub_title_access_denied": "No permission for camera access.",
+    "sub_title_access_denied_location": "No permission for location access.",
     "go_to_setting": "Go to Setting",
     "hint_description": "Write a description...",
     "upload": "Upload",
@@ -32,6 +33,7 @@
     "district": "District",
     "subdistrict": "Sub-district",
     "urban_village": "Urban Village",
-    "postal_code": "Postal Code"
+    "postal_code": "Postal Code",
+    "add_location": "Add Location"
 
 }

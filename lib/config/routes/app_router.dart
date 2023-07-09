@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/data/source/remote/response/stories_response.dart';
 import 'package:story_app/ui/camera/camera_story_preview.dart';
@@ -12,6 +13,7 @@ import 'package:story_app/ui/home/home_page.dart';
 import 'package:story_app/ui/home/home_view_model.dart';
 import 'package:story_app/ui/login/login_page.dart';
 import 'package:story_app/ui/login/login_view_model.dart';
+import 'package:story_app/ui/maps/location_page.dart';
 import 'package:story_app/ui/maps/maps_page.dart';
 import 'package:story_app/ui/register/register_page.dart';
 import 'package:story_app/ui/register/register_view_model.dart';
@@ -109,6 +111,14 @@ class AppRouter {
         ),
       );
 
+  static Page locationPageRouteBuilder(
+          BuildContext context, GoRouterState state) =>
+      CustomSlideTransition(
+        child: LocationPage(
+          myLocation: state.extra as LatLng,
+        ),
+      );
+
   // use this in [MaterialApp.router]
   static final GoRouter _router = GoRouter(
     initialLocation: Constants.splashScreenPage,
@@ -148,6 +158,10 @@ class AppRouter {
       GoRoute(
         path: Constants.mapsPage,
         pageBuilder: mapsPageRouteBuilder,
+      ),
+      GoRoute(
+        path: Constants.locationPage,
+        pageBuilder: locationPageRouteBuilder,
       ),
     ],
   );

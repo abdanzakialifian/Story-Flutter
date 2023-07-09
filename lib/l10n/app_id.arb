@@ -18,6 +18,7 @@
     "created": "Dibuat pada : ",
     "title_access_denied": "Akses Ditolak",
     "sub_title_access_denied": "Tidak ada izin untuk akses kamera.",
+    "sub_title_access_denied_location": "Tidak ada izin untuk akses lokasi.",
     "go_to_setting": "Pergi ke Pengaturan",
     "hint_description": "Tulis deskripsi...",
     "upload": "Unggah",
@@ -32,5 +33,6 @@
     "district": "Kabupaten",
     "subdistrict": "Kecamatan",
     "urban_village": "Kelurahan",
-    "postal_code": "Kode Pos"
+    "postal_code": "Kode Pos",
+    "add_location": "Tambah Lokasi"
 }
