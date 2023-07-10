@@ -93,13 +93,13 @@ class _MapsPageState extends State<MapsPage> {
             onMapCreated: (controller) {
               setState(() {
                 _googleMapController = controller;
-                controller.animateCamera(
-                  CameraUpdate.newLatLngZoom(
-                    userPosition,
-                    18,
-                  ),
-                );
               });
+              controller.animateCamera(
+                CameraUpdate.newLatLngZoom(
+                  userPosition,
+                  18,
+                ),
+              );
             },
             initialCameraPosition:
                 const CameraPosition(target: LatLng(0.0, 0.0)),
@@ -107,6 +107,7 @@ class _MapsPageState extends State<MapsPage> {
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapToolbarEnabled: false,
+            myLocationEnabled: true,
           ),
           Positioned(
             bottom: 20,
@@ -116,8 +117,9 @@ class _MapsPageState extends State<MapsPage> {
                 FloatingActionButton.small(
                   heroTag: "ZoomIn",
                   backgroundColor: HexColor(Constants.colorDarkBlue),
-                  onPressed: () =>
-                      _googleMapController.animateCamera(CameraUpdate.zoomIn()),
+                  onPressed: () => _googleMapController.animateCamera(
+                    CameraUpdate.zoomIn(),
+                  ),
                   child: const Icon(Icons.zoom_in),
                 ),
                 const SizedBox(
@@ -126,8 +128,9 @@ class _MapsPageState extends State<MapsPage> {
                 FloatingActionButton.small(
                   heroTag: "ZoomOut",
                   backgroundColor: HexColor(Constants.colorDarkBlue),
-                  onPressed: () => _googleMapController
-                      .animateCamera(CameraUpdate.zoomOut()),
+                  onPressed: () => _googleMapController.animateCamera(
+                    CameraUpdate.zoomOut(),
+                  ),
                   child: const Icon(Icons.zoom_out),
                 ),
               ],

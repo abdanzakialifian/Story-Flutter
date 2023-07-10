@@ -230,18 +230,21 @@ class _CameraStoryPreviewState extends State<CameraStoryPreview>
 
     if (state == AppLifecycleState.paused) {
       // Free up memory when camera not active
+      cameraController.dispose();
+      // change state lifecycle paused
       setState(() {
         _isLifeCyclePaused = true;
       });
-      cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
+      // lifecycle resumed run only state _isLifecyclePaused true
       if (_isLifeCyclePaused) {
-        setState(() {
-          _isLifeCyclePaused = false;
-        });
         context.read<CameraViewModel>().setIsCameraInitialize = false;
         // Reinitialize the camera with same properties
         _initializeCameraController(cameraController.description);
+        // change state lifecycle paused
+        setState(() {
+          _isLifeCyclePaused = false;
+        });
       }
     }
   }

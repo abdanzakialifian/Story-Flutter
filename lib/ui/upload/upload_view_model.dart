@@ -10,11 +10,23 @@ class UploadViewModel extends ChangeNotifier {
   String _successMessage = "";
   String _failedMessage = "";
   bool _isButtonClicked = false;
+  bool _isWaitingOpenMap = false;
+  String _locationAddress = "";
 
   UploadViewModel() : _storyRepositoryImpl = StoryRepositoryImpl();
 
   set setIsButtonClicked(bool value) {
     _isButtonClicked = value;
+    notifyListeners();
+  }
+
+  set setIsWaitingOpenMap(bool value) {
+    _isWaitingOpenMap = value;
+    notifyListeners();
+  }
+
+  set setLocationAddress(String value) {
+    _locationAddress = value;
     notifyListeners();
   }
 
@@ -25,6 +37,10 @@ class UploadViewModel extends ChangeNotifier {
   String get failedMessage => _failedMessage;
 
   bool get isButtonClicked => _isButtonClicked;
+
+  bool get isWaitingOpenMap => _isWaitingOpenMap;
+
+  String get locationAddress => _locationAddress;
 
   void postStory(File imageFile, String description) {
     _resultState = ResultState.loading;

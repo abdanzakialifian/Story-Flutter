@@ -32,7 +32,7 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<UploadViewModel>();
+    final provider = context.watch<UploadViewModel>();
 
     return WillPopScope(
       onWillPop: () async {
@@ -42,187 +42,264 @@ class _UploadPageState extends State<UploadPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: LayoutBuilder(
-            builder: (_, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: AppBar().preferredSize.height,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Stack(
-                              alignment: Alignment.centerLeft,
-                              children: [
-                                SafeOnTap(
-                                  onSafeTap: () =>
-                                      context.pop(Constants.resultData),
-                                  child: const Icon(Icons.arrow_back),
-                                ),
-                                Center(
-                                  child: Text(
-                                    AppLocalizations.of(context)
-                                            ?.upload_story ??
-                                        "",
-                                    style: const TextStyle(
-                                      fontFamily: Constants.manjariRegular,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+          child: Stack(
+            children: [
+              LayoutBuilder(
+                builder: (_, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraints.maxHeight),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: AppBar().preferredSize.height,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    SafeOnTap(
+                                      onSafeTap: () =>
+                                          context.pop(Constants.resultData),
+                                      child: const Icon(Icons.arrow_back),
                                     ),
-                                  ),
+                                    Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)
+                                                ?.upload_story ??
+                                            "",
+                                        style: const TextStyle(
+                                          fontFamily: Constants.manjariRegular,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(24),
-                            child: Column(
-                              children: [
-                                Center(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(18),
-                                    child: Image.file(
-                                      widget.image,
-                                      height: 320,
-                                      width: 220,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TextField(
-                                  controller: _textEditingController,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _isEmptyTextEditing = value.isEmpty;
-                                    });
-                                  },
-                                  autocorrect: false,
-                                  enableSuggestions: false,
-                                  keyboardType: TextInputType.multiline,
-                                  minLines: 6,
-                                  maxLines: 8,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    decorationThickness: 0,
-                                  ),
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    isCollapsed: true,
-                                    contentPadding: const EdgeInsets.all(20),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            HexColor(Constants.colorLightGrey),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(24),
+                                child: Column(
+                                  children: [
+                                    Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: Image.file(
+                                          widget.image,
+                                          height: 320,
+                                          width: 220,
+                                          fit: BoxFit.fitWidth,
+                                        ),
                                       ),
-                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            HexColor(Constants.colorDarkBlue),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: _textEditingController,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isEmptyTextEditing = value.isEmpty;
+                                        });
+                                      },
+                                      autocorrect: false,
+                                      enableSuggestions: false,
+                                      keyboardType: TextInputType.multiline,
+                                      minLines: 6,
+                                      maxLines: 8,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        decorationThickness: 0,
                                       ),
-                                      borderRadius: BorderRadius.circular(20),
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        isCollapsed: true,
+                                        contentPadding:
+                                            const EdgeInsets.all(20),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: HexColor(
+                                                Constants.colorLightGrey),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: HexColor(
+                                                Constants.colorDarkBlue),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        hintText: AppLocalizations.of(context)
+                                            ?.hint_description,
+                                        hintStyle: TextStyle(
+                                          color: HexColor(
+                                              Constants.colorLightGrey),
+                                        ),
+                                      ),
                                     ),
-                                    hintText: AppLocalizations.of(context)
-                                        ?.hint_description,
-                                    hintStyle: TextStyle(
-                                      color: HexColor(Constants.colorLightGrey),
+                                    const SizedBox(
+                                      height: 20,
                                     ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                SafeOnTap(
-                                  onSafeTap: () => _checkPermissionMyLocation(),
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                    ),
-                                    child: IntrinsicHeight(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Text(
-                                              AppLocalizations.of(context)
-                                                      ?.add_location ??
-                                                  "",
-                                              style: const TextStyle(
-                                                fontFamily:
-                                                    Constants.manjariBold,
+                                    provider.locationAddress == ""
+                                        ? SafeOnTap(
+                                            onSafeTap: () => provider
+                                                    .isWaitingOpenMap
+                                                ? null
+                                                : _checkPermissionMyLocation(
+                                                    provider),
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 10,
+                                              ),
+                                              child: IntrinsicHeight(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      child: Text(
+                                                        AppLocalizations.of(
+                                                                    context)
+                                                                ?.add_location ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                          fontFamily: Constants
+                                                              .manjariBold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 20,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 10,
+                                            ),
+                                            child: IntrinsicHeight(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                      provider.locationAddress,
+                                                      style: const TextStyle(
+                                                        fontFamily: Constants
+                                                            .manjariBold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SafeOnTap(
+                                                    onSafeTap: () => provider
+                                                        .setLocationAddress = "",
+                                                    child: const Icon(
+                                                      Icons.close,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
-                                          const Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 20,
-                                          )
-                                        ],
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Consumer<UploadViewModel>(
+                                          builder: (_, value, child) {
+                                            if (value.isButtonClicked) {
+                                              return ButtonState(
+                                                isLoading: true,
+                                                onButtonPressed: () {},
+                                              );
+                                            } else {
+                                              return ButtonState(
+                                                textButton:
+                                                    AppLocalizations.of(context)
+                                                        ?.upload,
+                                                onButtonPressed:
+                                                    _isEmptyTextEditing
+                                                        ? null
+                                                        : () async {
+                                                            provider.setIsButtonClicked =
+                                                                true;
+                                                            try {
+                                                              var image =
+                                                                  await _resizeImageIfLarge1MB(
+                                                                      widget
+                                                                          .image);
+                                                              provider.postStory(
+                                                                  image,
+                                                                  _textEditingController
+                                                                      .text);
+                                                            } catch (error) {
+                                                              log("Failed to compress image : $error");
+                                                            }
+                                                          },
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    _stateUpload(),
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Consumer<UploadViewModel>(
-                                      builder: (_, value, child) {
-                                        if (value.isButtonClicked) {
-                                          return ButtonState(
-                                            isLoading: true,
-                                            onButtonPressed: () {},
-                                          );
-                                        } else {
-                                          return ButtonState(
-                                            textButton:
-                                                AppLocalizations.of(context)
-                                                    ?.upload,
-                                            onButtonPressed: _isEmptyTextEditing
-                                                ? null
-                                                : () async {
-                                                    provider.setIsButtonClicked =
-                                                        true;
-                                                    try {
-                                                      var image =
-                                                          await _resizeImageIfLarge1MB(
-                                                              widget.image);
-                                                      provider.postStory(
-                                                          image,
-                                                          _textEditingController
-                                                              .text);
-                                                    } catch (error) {
-                                                      log("Failed to compress image : $error");
-                                                    }
-                                                  },
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                _stateUpload(),
-                              ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Center(
+                child: provider.isWaitingOpenMap
+                    ? SizedBox(
+                        height: 110,
+                        width: 150,
+                        child: AlertDialog(
+                          elevation: 2,
+                          contentPadding: EdgeInsets.zero,
+                          content: Center(
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: HexColor(Constants.colorDarkBlue),
+                              ),
                             ),
                           ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ],
           ),
         ),
       ),
@@ -285,7 +362,7 @@ class _UploadPageState extends State<UploadPage> {
     }
   }
 
-  void _checkPermissionMyLocation() async {
+  void _checkPermissionMyLocation(UploadViewModel provider) async {
     final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
     final Position position;
     final LatLng latLng;
@@ -294,9 +371,7 @@ class _UploadPageState extends State<UploadPage> {
 
     isServiceEnabled = await geolocatorPlatform.isLocationServiceEnabled();
     if (!isServiceEnabled) {
-      if (mounted) {
-        "Location services is not available".showSnackbar(context);
-      }
+      log("Location services is not available");
       return;
     }
 
@@ -304,9 +379,7 @@ class _UploadPageState extends State<UploadPage> {
     if (locationPermission == LocationPermission.denied) {
       locationPermission = await geolocatorPlatform.requestPermission();
       if (locationPermission == LocationPermission.denied) {
-        if (mounted) {
-          "Location permission is denied".showSnackbar(context);
-        }
+        log("Location permission is denied");
         return;
       }
       if (locationPermission == LocationPermission.deniedForever) {
@@ -315,11 +388,22 @@ class _UploadPageState extends State<UploadPage> {
       }
     }
 
-    position = await geolocatorPlatform.getCurrentPosition();
-    latLng = LatLng(position.latitude, position.longitude);
+    try {
+      provider.setIsWaitingOpenMap = true;
 
-    if (mounted) {
-      context.push(Constants.locationPage, extra: latLng);
+      position = await geolocatorPlatform.getCurrentPosition();
+
+      provider.setIsWaitingOpenMap = false;
+
+      latLng = LatLng(position.latitude, position.longitude);
+
+      if (mounted) {
+        context.push(Constants.locationPage, extra: latLng).then(
+              (value) => provider.setLocationAddress = value.toString(),
+            );
+      }
+    } catch (e) {
+      provider.setIsWaitingOpenMap = false;
     }
   }
 
