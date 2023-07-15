@@ -69,7 +69,11 @@ class ApiService {
   }
 
   Future<http.StreamedResponse> postStory(
-      File imageFile, String description) async {
+    File imageFile,
+    String description,
+    double latitude,
+    double longitude,
+  ) async {
     String? token;
 
     try {
@@ -94,6 +98,16 @@ class ApiService {
 
     // add description
     request.fields["description"] = description;
+
+    if (latitude != 0.0) {
+      // add latitude
+      request.fields["lat"] = "$latitude";
+    }
+
+    if (longitude != 0.0) {
+      // add longitude
+      request.fields["lon"] = "$longitude";
+    }
 
     // send request to server
     return await request.send();

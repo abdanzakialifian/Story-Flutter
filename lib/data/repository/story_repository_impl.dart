@@ -60,6 +60,11 @@ class StoryRepositoryImpl implements StoryRepository {
       _remoteDataSource.getAllStories(page, size);
 
   @override
-  Future<BaseResponse> postStory(File imageFile, String description) =>
-      _remoteDataSource.postStory(imageFile, description);
+  Future<BaseResponse> postStory(
+    File imageFile,
+    String description,
+    double latitude,
+    double longitude,
+  ) =>
+      _remoteDataSource.postStory(imageFile, description, latitude, longitude);
 }

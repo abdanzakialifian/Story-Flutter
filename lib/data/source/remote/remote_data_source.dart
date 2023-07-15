@@ -38,10 +38,15 @@ class RemoteDataSource {
     }
   }
 
-  Future<BaseResponse> postStory(File imageFile, String description) async {
+  Future<BaseResponse> postStory(
+    File imageFile,
+    String description,
+    double latitude,
+    double longitude,
+  ) async {
     try {
-      http.StreamedResponse streamedResponse =
-          await apiService.postStory(imageFile, description);
+      http.StreamedResponse streamedResponse = await apiService.postStory(
+          imageFile, description, latitude, longitude);
       http.Response response = await http.Response.fromStream(streamedResponse);
       return baseResponseFromJson(response.body);
     } catch (e) {

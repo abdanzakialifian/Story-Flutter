@@ -12,7 +12,12 @@ abstract class StoryRepository {
   Future<bool> getStateLogin();
   Future<String> getLocaleLanguage();
   Future<StoriesResponse> getAllStories(int page, int size);
-  Future<BaseResponse> postStory(File imageFile, String description);
+  Future<BaseResponse> postStory(
+    File imageFile,
+    String description,
+    double latitude,
+    double longitude,
+  );
   void saveUserData(UserData userData);
   void deleteUserData();
   void saveStateLogin(bool isLogin);

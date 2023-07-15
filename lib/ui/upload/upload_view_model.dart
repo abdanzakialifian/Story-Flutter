@@ -43,10 +43,17 @@ class UploadViewModel extends ChangeNotifier {
 
   UserLocation get userLocation => _userLocation;
 
-  void postStory(File imageFile, String description) {
+  void postStory(
+    File imageFile,
+    String description,
+    double latitude,
+    double longitude,
+  ) {
     _resultState = ResultState.loading;
     notifyListeners();
-    _storyRepositoryImpl.postStory(imageFile, description).then((value) {
+    _storyRepositoryImpl
+        .postStory(imageFile, description, latitude, longitude)
+        .then((value) {
       if (value.error == false) {
         _resultState = ResultState.hasData;
         _successMessage = value.message.toString();

@@ -254,14 +254,27 @@ class _UploadPageState extends State<UploadPage> {
                                                             provider.setIsButtonClicked =
                                                                 true;
                                                             try {
-                                                              var image =
+                                                              File image =
                                                                   await _resizeImageIfLarge1MB(
                                                                       widget
                                                                           .image);
-                                                              provider.postStory(
-                                                                  image,
-                                                                  _textEditingController
-                                                                      .text);
+
+                                                              final LatLng?
+                                                                  latLng =
+                                                                  provider
+                                                                      .userLocation
+                                                                      .latLng;
+
+                                                              provider
+                                                                  .postStory(
+                                                                image,
+                                                                _textEditingController
+                                                                    .text,
+                                                                latLng?.latitude ??
+                                                                    0.0,
+                                                                latLng?.longitude ??
+                                                                    0.0,
+                                                              );
                                                             } catch (error) {
                                                               log("Failed to compress image : $error");
                                                             }
