@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:story_app/data/source/local/user_location.dart';
 import 'package:story_app/utils/constants.dart';
 import 'package:story_app/utils/extensions.dart';
 import 'package:story_app/utils/function.dart';
@@ -104,17 +105,21 @@ class _LocationPageState extends State<LocationPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
+                      final LatLng latLng = _markers.first.position;
+
                       final info = await placemarkFromCoordinates(
-                        _markers.first.position.latitude,
-                        _markers.first.position.longitude,
+                        latLng.latitude,
+                        latLng.longitude,
                       );
 
-                      final street = info[0].street;
-                      final address =
+                      final String address =
                           "${info[0].subLocality}, ${info[0].locality}, ${info[0].postalCode}, ${info[0].country}";
 
+                      final UserLocation userLocation =
+                          UserLocation(address: address, latLng: latLng);
+
                       if (mounted) {
-                        context.pop(address);
+                        context.pop(userLocation);
                       }
                     },
                     child: Container(

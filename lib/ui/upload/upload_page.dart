@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:story_app/data/source/local/user_location.dart';
 import 'package:story_app/ui/component/bottom_sheet_information.dart';
 import 'package:story_app/ui/component/button_state.dart';
 import 'package:story_app/ui/component/safe_on_tap.dart';
@@ -148,13 +149,16 @@ class _UploadPageState extends State<UploadPage> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    provider.locationAddress == ""
+                                    provider.userLocation.address == "" ||
+                                            provider.userLocation.address ==
+                                                null
                                         ? SafeOnTap(
                                             onSafeTap: () => provider
                                                     .isWaitingOpenMap
                                                 ? null
                                                 : _checkPermissionMyLocation(
-                                                    provider),
+                                                    provider,
+                                                  ),
                                             child: Container(
                                               color: Colors.transparent,
                                               padding:
@@ -200,20 +204,25 @@ class _UploadPageState extends State<UploadPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                      provider.locationAddress,
-                                                      style: const TextStyle(
-                                                        fontFamily: Constants
-                                                            .manjariBold,
+                                                  Expanded(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      child: Text(
+                                                        provider.userLocation
+                                                                .address ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                          fontFamily: Constants
+                                                              .manjariBold,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                   SafeOnTap(
                                                     onSafeTap: () => provider
-                                                        .setLocationAddress = "",
+                                                            .setUserLocation =
+                                                        UserLocation(),
                                                     child: const Icon(
                                                       Icons.close,
                                                       size: 20,
@@ -399,7 +408,7 @@ class _UploadPageState extends State<UploadPage> {
 
       if (mounted) {
         context.push(Constants.locationPage, extra: latLng).then(
-              (value) => provider.setLocationAddress = value.toString(),
+              (value) => provider.setUserLocation = value as UserLocation,
             );
       }
     } catch (e) {

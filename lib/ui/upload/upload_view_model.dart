@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:story_app/data/repository/story_repository_impl.dart';
+import 'package:story_app/data/source/local/user_location.dart';
 import 'package:story_app/utils/result_state.dart';
 
 class UploadViewModel extends ChangeNotifier {
@@ -11,7 +12,7 @@ class UploadViewModel extends ChangeNotifier {
   String _failedMessage = "";
   bool _isButtonClicked = false;
   bool _isWaitingOpenMap = false;
-  String _locationAddress = "";
+  UserLocation _userLocation = UserLocation();
 
   UploadViewModel() : _storyRepositoryImpl = StoryRepositoryImpl();
 
@@ -25,8 +26,8 @@ class UploadViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set setLocationAddress(String value) {
-    _locationAddress = value;
+  set setUserLocation(UserLocation value) {
+    _userLocation = value;
     notifyListeners();
   }
 
@@ -40,7 +41,7 @@ class UploadViewModel extends ChangeNotifier {
 
   bool get isWaitingOpenMap => _isWaitingOpenMap;
 
-  String get locationAddress => _locationAddress;
+  UserLocation get userLocation => _userLocation;
 
   void postStory(File imageFile, String description) {
     _resultState = ResultState.loading;
