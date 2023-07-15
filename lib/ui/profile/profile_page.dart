@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/base/main_view_model.dart';
@@ -152,10 +153,29 @@ class ProfilePage extends StatelessWidget {
                   context.go(Constants.loginPage);
                 },
               ),
+              Expanded(
+                child: FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return const SizedBox.shrink();
+                    PackageInfo? packageInfo = snapshot.data;
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                          "${AppLocalizations.of(context)?.version} ${packageInfo?.version}"),
+                    );
+                  },
+                ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<String> getVersionName() async {
+    PackageInfo platform = await PackageInfo.fromPlatform();
+    return platform.version;
   }
 }

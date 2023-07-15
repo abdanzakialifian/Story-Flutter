@@ -1,5 +1,6 @@
 {
     "story_app": "StoryApp",
+    "story_app_pro": "StoryApp Pro",
     "email": "Email",
     "password": "Password",
     "sub_title_login_page": "I am so happy to see you back. You can continue to login for create story.",
@@ -34,6 +35,6 @@
     "subdistrict": "Sub-district",
     "urban_village": "Urban Village",
     "postal_code": "Postal Code",
-    "add_location": "Add Location"
-
+    "add_location": "Add Location",
+    "version": "Version"
 }

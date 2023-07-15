@@ -9,6 +9,7 @@ import 'package:story_app/ui/login/login_view_model.dart';
 import 'package:story_app/utils/common.dart';
 import 'package:story_app/utils/constants.dart';
 import 'package:story_app/utils/extensions.dart';
+import 'package:story_app/utils/flavor_config.dart';
 import 'package:story_app/utils/function.dart';
 import 'package:story_app/utils/hexa_color.dart';
 import 'package:story_app/utils/result_state.dart';
@@ -85,7 +86,7 @@ class LoginPage extends StatelessWidget {
                       child: Hero(
                         tag: Constants.appName,
                         child: Text(
-                          AppLocalizations.of(context)?.story_app ?? "",
+                          FlavorConfig.instance.titleApp ?? "",
                           style: const TextStyle(
                             fontSize: 24,
                             fontFamily: Constants.manjariBold,

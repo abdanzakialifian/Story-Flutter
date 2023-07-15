@@ -1,5 +1,6 @@
 {
     "story_app": "StoryApp",
+    "story_app_pro": "StoryApp Pro",
     "email": "Email",
     "password": "Password",
     "sub_title_login_page": "Aku sangat senang melihatmu kembali. Anda dapat masuk untuk membuat cerita.",
@@ -34,5 +35,6 @@
     "subdistrict": "Kecamatan",
     "urban_village": "Kelurahan",
     "postal_code": "Kode Pos",
-    "add_location": "Tambah Lokasi"
+    "add_location": "Tambah Lokasi",
+    "version": "Versi"
 }

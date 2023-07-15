@@ -15,6 +15,8 @@ import 'package:story_app/ui/upload/upload_view_model.dart';
 import 'package:story_app/utils/common.dart';
 import 'package:story_app/utils/constants.dart';
 import 'package:story_app/utils/extensions.dart';
+import 'package:story_app/utils/flavor_config.dart';
+import 'package:story_app/utils/flavor_type.dart';
 import 'package:story_app/utils/hexa_color.dart';
 import 'package:story_app/utils/result_state.dart';
 
@@ -30,6 +32,7 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isEmptyTextEditing = true;
+  final _flavorType = FlavorConfig.instance.flavorType;
 
   @override
   Widget build(BuildContext context) {
@@ -149,89 +152,95 @@ class _UploadPageState extends State<UploadPage> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    provider.userLocation.address == "" ||
-                                            provider.userLocation.address ==
-                                                null
-                                        ? SafeOnTap(
-                                            onSafeTap: () => provider
-                                                    .isWaitingOpenMap
-                                                ? null
-                                                : _checkPermissionMyLocation(
-                                                    provider,
-                                                  ),
-                                            child: Container(
-                                              color: Colors.transparent,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 10,
-                                              ),
-                                              child: IntrinsicHeight(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.bottomLeft,
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                    context)
-                                                                ?.add_location ??
-                                                            "",
-                                                        style: const TextStyle(
-                                                          fontFamily: Constants
-                                                              .manjariBold,
-                                                        ),
+                                    _flavorType == FlavorType.pro
+                                        ? provider.userLocation.address == "" ||
+                                                provider.userLocation.address ==
+                                                    null
+                                            ? SafeOnTap(
+                                                onSafeTap: () => provider
+                                                        .isWaitingOpenMap
+                                                    ? null
+                                                    : _checkPermissionMyLocation(
+                                                        provider,
                                                       ),
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 10,
+                                                  ),
+                                                  child: IntrinsicHeight(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Text(
+                                                            AppLocalizations.of(
+                                                                        context)
+                                                                    ?.add_location ??
+                                                                "",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily: Constants
+                                                                  .manjariBold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          size: 20,
+                                                        )
+                                                      ],
                                                     ),
-                                                    const Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      size: 20,
-                                                    )
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 10,
-                                            ),
-                                            child: IntrinsicHeight(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.bottomLeft,
-                                                      child: Text(
-                                                        provider.userLocation
-                                                                .address ??
-                                                            "",
-                                                        style: const TextStyle(
-                                                          fontFamily: Constants
-                                                              .manjariBold,
+                                              )
+                                            : Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                ),
+                                                child: IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Text(
+                                                            provider.userLocation
+                                                                    .address ??
+                                                                "",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily: Constants
+                                                                  .manjariBold,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
+                                                      SafeOnTap(
+                                                        onSafeTap: () => provider
+                                                                .setUserLocation =
+                                                            UserLocation(),
+                                                        child: const Icon(
+                                                          Icons.close,
+                                                          size: 20,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  SafeOnTap(
-                                                    onSafeTap: () => provider
-                                                            .setUserLocation =
-                                                        UserLocation(),
-                                                    child: const Icon(
-                                                      Icons.close,
-                                                      size: 20,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                                ),
+                                              )
+                                        : const SizedBox.shrink(),
                                     Expanded(
                                       child: Align(
                                         alignment: Alignment.bottomCenter,

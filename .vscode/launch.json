@@ -5,22 +5,70 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "story_app",
+            "name": "free_debug",
             "request": "launch",
             "type": "dart",
-            "program": "lib/base/main.dart"
+            "program": "lib/base/main_free.dart",
+            "flutterMode": "debug",
+            "args": [
+              "--flavor",
+              "free"
+            ]
         },
         {
-            "name": "story_app (profile mode)",
+            "name": "free_profile",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "program": "lib/base/main_free.dart",
+            "flutterMode": "profile",
+            "args": [
+              "--flavor",
+              "free"
+            ]
         },
         {
-            "name": "story_app (release mode)",
+            "name": "free_release",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "program": "lib/base/main_free.dart",
+            "flutterMode": "release",
+            "args": [
+              "--flavor",
+              "free"
+            ]
+        },
+        {
+            "name": "pro_debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/base/main_pro.dart",
+            "flutterMode": "debug",
+            "args": [
+              "--flavor",
+              "paid"
+            ]
+        },
+        {
+            "name": "pro_profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/base/main_pro.dart",
+            "flutterMode": "profile",
+            "args": [
+              "--flavor",
+              "paid"
+            ]
+        },
+        {
+            "name": "pro_release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/base/main_pro.dart",
+            "flutterMode": "release",
+            "args": [
+              "--flavor",
+              "paid"
+            ]
+        },
     ]
 }

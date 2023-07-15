@@ -14,6 +14,7 @@ import 'package:story_app/ui/component/item_list_story.dart';
 import 'package:story_app/utils/common.dart';
 import 'package:story_app/utils/constants.dart';
 import 'package:story_app/utils/extensions.dart';
+import 'package:story_app/utils/flavor_config.dart';
 import 'package:story_app/utils/hexa_color.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                           child: Hero(
                             tag: Constants.appName,
                             child: Text(
-                              AppLocalizations.of(context)?.story_app ?? "",
+                              FlavorConfig.instance.titleApp ?? "",
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontFamily: Constants.manjariBold,

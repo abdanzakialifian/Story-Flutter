@@ -51,14 +51,34 @@ android {
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionName "1.0.0"
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        profile {
+            applicationIdSuffix ".profile"
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+        }
+    }
+
+    flavorDimensions "flavors"
+    productFlavors {
+        free {
+            dimension "flavors"
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+        }
+        paid {
+            dimension "flavors"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
         }
     }
 }

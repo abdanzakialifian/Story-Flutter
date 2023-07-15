@@ -20,7 +20,6 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   late final GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
-  bool _isAnimateDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _LocationPageState extends State<LocationPage> {
                 setState(() {
                   _googleMapController = controller;
                 });
-                _setLocationMarker(widget.myLocation ?? const LatLng(0.0, 0.0));
+                _setLocationMarker(widget.myLocation);
               },
               onTap: (latLng) {
                 _setLocationMarker(latLng);
@@ -105,7 +104,7 @@ class _LocationPageState extends State<LocationPage> {
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: _isAnimateDone
+                    onTap: _markers.isNotEmpty
                         ? () async {
                             final LatLng latLng = _markers.first.position;
 
@@ -158,9 +157,7 @@ class _LocationPageState extends State<LocationPage> {
                     heroTag: "My Location",
                     backgroundColor: HexColor(Constants.colorDarkBlue),
                     onPressed: () {
-                      _setLocationMarker(
-                        widget.myLocation ?? const LatLng(0.0, 0.0),
-                      );
+                      _setLocationMarker(widget.myLocation);
                     },
                     child: const Icon(Icons.my_location),
                   ),
@@ -199,14 +196,10 @@ class _LocationPageState extends State<LocationPage> {
     );
   }
 
-  void _setLocationMarker(LatLng position) async {
-    setState(() {
-      _isAnimateDone = false;
-    });
-
+  void _setLocationMarker(LatLng? position) async {
     final info = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
+      position?.latitude ?? 0.0,
+      position?.longitude ?? 0.0,
     );
 
     final street = info[0].street;
@@ -219,23 +212,19 @@ class _LocationPageState extends State<LocationPage> {
         infoWindow: InfoWindow(title: street, snippet: address),
         icon: BitmapDescriptor.fromBytes(value),
         markerId: const MarkerId("My Location"),
-        position: position,
+        position: position ?? const LatLng(0.0, 0.0),
       );
 
       setState(() {
         _markers.clear();
         _markers.add(myLocationMarker);
       });
-    });
 
-    _googleMapController
-        .animateCamera(
-      CameraUpdate.newLatLngZoom(position, 18),
-    )
-        .then((value) {
-      setState(() {
-        _isAnimateDone = true;
-      });
+      if (position != null) {
+        _googleMapController.animateCamera(
+          CameraUpdate.newLatLngZoom(position, 18),
+        );
+      }
     });
   }
 
