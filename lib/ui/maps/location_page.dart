@@ -20,6 +20,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   late final GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
+  bool _isAnimateDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,24 +105,26 @@ class _LocationPageState extends State<LocationPage> {
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: () async {
-                      final LatLng latLng = _markers.first.position;
+                    onTap: _isAnimateDone
+                        ? () async {
+                            final LatLng latLng = _markers.first.position;
 
-                      final info = await placemarkFromCoordinates(
-                        latLng.latitude,
-                        latLng.longitude,
-                      );
+                            final info = await placemarkFromCoordinates(
+                              latLng.latitude,
+                              latLng.longitude,
+                            );
 
-                      final String address =
-                          "${info[0].subLocality}, ${info[0].locality}, ${info[0].postalCode}, ${info[0].country}";
+                            final String address =
+                                "${info[0].subLocality}, ${info[0].locality}, ${info[0].postalCode}, ${info[0].country}";
 
-                      final UserLocation userLocation =
-                          UserLocation(address: address, latLng: latLng);
+                            final UserLocation userLocation =
+                                UserLocation(address: address, latLng: latLng);
 
-                      if (mounted) {
-                        context.pop(userLocation);
-                      }
-                    },
+                            if (mounted) {
+                              context.pop(userLocation);
+                            }
+                          }
+                        : null,
                     child: Container(
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -197,6 +200,10 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   void _setLocationMarker(LatLng position) async {
+    setState(() {
+      _isAnimateDone = false;
+    });
+
     final info = await placemarkFromCoordinates(
       position.latitude,
       position.longitude,
@@ -221,9 +228,15 @@ class _LocationPageState extends State<LocationPage> {
       });
     });
 
-    _googleMapController.animateCamera(
+    _googleMapController
+        .animateCamera(
       CameraUpdate.newLatLngZoom(position, 18),
-    );
+    )
+        .then((value) {
+      setState(() {
+        _isAnimateDone = true;
+      });
+    });
   }
 
   @override
