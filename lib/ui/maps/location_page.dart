@@ -20,6 +20,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   late final GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
+  bool _isAnimateDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,11 @@ class _LocationPageState extends State<LocationPage> {
         child: Stack(
           children: [
             GoogleMap(
+              onCameraIdle: () {
+                setState(() {
+                  _isAnimateDone = true;
+                });
+              },
               onMapCreated: (controller) {
                 setState(() {
                   _googleMapController = controller;
@@ -104,7 +110,7 @@ class _LocationPageState extends State<LocationPage> {
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: _markers.isNotEmpty
+                    onTap: _isAnimateDone && _markers.isNotEmpty
                         ? () async {
                             final LatLng latLng = _markers.first.position;
 
@@ -197,35 +203,41 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   void _setLocationMarker(LatLng? position) async {
-    final info = await placemarkFromCoordinates(
-      position?.latitude ?? 0.0,
-      position?.longitude ?? 0.0,
-    );
+    setState(() {
+      _isAnimateDone = false;
+    });
 
-    final street = info[0].street;
-    final address =
-        "${info[0].subLocality}, ${info[0].locality}, ${info[0].postalCode}, ${info[0].country}";
-
-    getBytesFromAsset("icon_marker.png".getImageAssets(), 180).then((value) {
-      if (value == null) return;
-      final Marker myLocationMarker = Marker(
-        infoWindow: InfoWindow(title: street, snippet: address),
-        icon: BitmapDescriptor.fromBytes(value),
-        markerId: const MarkerId("My Location"),
-        position: position ?? const LatLng(0.0, 0.0),
+    if (position != null &&
+        position.latitude != 0.0 &&
+        position.longitude != 0.0) {
+      final info = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
       );
 
-      setState(() {
-        _markers.clear();
-        _markers.add(myLocationMarker);
-      });
+      final street = info[0].street;
+      final address =
+          "${info[0].subLocality}, ${info[0].locality}, ${info[0].postalCode}, ${info[0].country}";
 
-      if (position != null) {
+      getBytesFromAsset("icon_marker.png".getImageAssets(), 180).then((value) {
+        if (value == null) return;
+        final Marker myLocationMarker = Marker(
+          infoWindow: InfoWindow(title: street, snippet: address),
+          icon: BitmapDescriptor.fromBytes(value),
+          markerId: const MarkerId("My Location"),
+          position: position,
+        );
+
+        setState(() {
+          _markers.clear();
+          _markers.add(myLocationMarker);
+        });
+
         _googleMapController.animateCamera(
           CameraUpdate.newLatLngZoom(position, 18),
         );
-      }
-    });
+      });
+    }
   }
 
   @override

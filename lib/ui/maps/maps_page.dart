@@ -33,54 +33,7 @@ class _MapsPageState extends State<MapsPage> {
       widget.listStoryResponse?.lon ?? 0.0,
     );
 
-    getBytesFromAsset("icon_marker.png".getImageAssets(), 180).then((value) {
-      if (value == null) return;
-      final marker = Marker(
-        icon: BitmapDescriptor.fromBytes(value),
-        markerId: MarkerId(widget.listStoryResponse?.id ?? ""),
-        position: userPosition,
-        onTap: () async {
-          final info = await placemarkFromCoordinates(
-            userPosition.latitude,
-            userPosition.longitude,
-          );
-          if (mounted) {
-            showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) {
-                final listLocationInformation = [
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.country,
-                      subTitle: info[0].country),
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.province,
-                      subTitle: info[0].administrativeArea),
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.district,
-                      subTitle: info[0].subAdministrativeArea),
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.subdistrict,
-                      subTitle: info[0].locality),
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.urban_village,
-                      subTitle: info[0].subLocality),
-                  LocationInformation(
-                      title: AppLocalizations.of(context)?.postal_code,
-                      subTitle: info[0].postalCode),
-                ];
-                return BottomSheetInformationLocation(
-                  userName: widget.listStoryResponse?.name,
-                  createdAt: widget.listStoryResponse?.createdAt,
-                  listLocationInformation: listLocationInformation,
-                );
-              },
-            );
-          }
-        },
-      );
-      markers.add(marker);
-    });
+    _setLocationMarker();
   }
 
   @override
@@ -139,5 +92,59 @@ class _MapsPageState extends State<MapsPage> {
         ],
       )),
     );
+  }
+
+  void _setLocationMarker() {
+    getBytesFromAsset("icon_marker.png".getImageAssets(), 180).then((value) {
+      if (value == null) return;
+      final marker = Marker(
+        icon: BitmapDescriptor.fromBytes(value),
+        markerId: MarkerId(widget.listStoryResponse?.id ?? ""),
+        position: userPosition,
+        onTap: () async {
+          final info = await placemarkFromCoordinates(
+            userPosition.latitude,
+            userPosition.longitude,
+          );
+          if (mounted) {
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) {
+                final listLocationInformation = [
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.country,
+                      subTitle: info[0].country),
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.province,
+                      subTitle: info[0].administrativeArea),
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.district,
+                      subTitle: info[0].subAdministrativeArea),
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.subdistrict,
+                      subTitle: info[0].locality),
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.urban_village,
+                      subTitle: info[0].subLocality),
+                  LocationInformation(
+                      title: AppLocalizations.of(context)?.postal_code,
+                      subTitle: info[0].postalCode),
+                ];
+                return BottomSheetInformationLocation(
+                  userName: widget.listStoryResponse?.name,
+                  createdAt: widget.listStoryResponse?.createdAt,
+                  listLocationInformation: listLocationInformation,
+                );
+              },
+            );
+          }
+        },
+      );
+
+      setState(() {
+        markers.add(marker);
+      });
+    });
   }
 }
