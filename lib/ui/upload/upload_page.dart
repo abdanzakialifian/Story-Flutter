@@ -430,8 +430,12 @@ class _UploadPageState extends State<UploadPage> {
 
       if (mounted) {
         context.push(Constants.locationPage, extra: latLng).then(
-              (value) => provider.setUserLocation = value as UserLocation,
-            );
+          (value) {
+            if (value != null) {
+              provider.setUserLocation = value as UserLocation;
+            }
+          },
+        );
       }
     } catch (e) {
       provider.setIsWaitingOpenMap = false;
